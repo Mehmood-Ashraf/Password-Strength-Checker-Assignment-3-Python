@@ -23,6 +23,9 @@ def check_password_strength(password):
         return "Very Weak"
     
 
+if "password_history" not in st.session_state:
+    st.session_state.password_history = []
+    
 
 st.title("🔐 Password Strength Meter")
 
@@ -32,3 +35,15 @@ user_password = st.text_input("Enter your password", type="password")
 if user_password:
     strength = check_password_strength(user_password)
     st.subheader(f"Password Strength: {strength}")
+
+if "user_password" not in st.session_state.password_history:
+    st.session_state.password_history.append(user_password)
+
+st.session_state.password_input = ""
+
+show_history = st.checkbox("Password History")
+
+if show_history:
+    st.subheader("Password History")
+    for password in st.session_state.password_history[::-1]: # [:: -1] for reverse the list (Last wali value pehle aayegi)
+        st.write(password)
